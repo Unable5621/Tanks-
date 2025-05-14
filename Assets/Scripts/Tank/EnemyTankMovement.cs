@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using UnityEngine.VFX;
 
 public class EnemyTankMovement : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class EnemyTankMovement : MonoBehaviour
     public Transform m_Turret;
 
     private GameObject m_Player;
+    public Transform m_SpawnPoint;
+
+    private Transform m_CurrentTarget;
+
     private NavMeshAgent m_NavAgent;
     private Rigidbody m_Rigidbody;
 
@@ -19,11 +25,15 @@ public class EnemyTankMovement : MonoBehaviour
         m_Player = GameObject.FindGameObjectWithTag("Player");
         m_NavAgent = GetComponent<NavMeshAgent>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_Follow = false;
     }
 
     private void OnEnable()
     {
+        if (m_SpawnPoint != null)
+            m_CurrentTarget = m_SpawnPoint;
+        else
+            m_CurrentTarget = transform;
+
         m_Rigidbody.isKinematic = false;
     }
 
@@ -36,7 +46,7 @@ public class EnemyTankMovement : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            m_Follow = true;
+            m_CurrentTarget = m_Player.transform;
         }
     }
 
@@ -44,26 +54,21 @@ public class EnemyTankMovement : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            m_Follow = false;
+            if (m_SpawnPoint != null)
+                m_CurrentTarget = m_SpawnPoint;
+            else
+                m_CurrentTarget = transform;
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (!m_Follow)
-            return;
-
         float distance = (m_Player.transform.position - transform.position).magnitude;
         if (distance > m_CloseDistance)
         {
-            m_NavAgent.SetDestination(m_Player.transform.position);
+            m_NavAgent.SetDestination(m_CurrentTarget.position);
             m_NavAgent.isStopped = false;
         }
         else
@@ -73,7 +78,7 @@ public class EnemyTankMovement : MonoBehaviour
 
         if (m_Turret != null)
         {
-            m_Turret.LookAt(m_Player.transform);
+            m_Turret.LookAt(m_CurrentTarget);
         }
     }
 }
