@@ -35,6 +35,7 @@ public class EnemyTankMovement : MonoBehaviour
             m_CurrentTarget = transform;
 
         m_Rigidbody.isKinematic = false;
+        transform.position = m_SpawnPoint.position;
     }
 
     private void OnDisable()

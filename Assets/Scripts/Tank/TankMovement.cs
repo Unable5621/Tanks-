@@ -13,6 +13,8 @@ public class TankMovement : MonoBehaviour
     private float m_ForwardInputValue;
     private float m_TurnInputValue;
 
+    public Transform m_SpawnPoint;
+
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();

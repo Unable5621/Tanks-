@@ -61,9 +61,24 @@ public class Shell : MonoBehaviour
         Destroy(gameObject);
     }
 
-    float CalculateDamage(Vector3 pos)
+    private float CalculateDamage(Vector3 targetPosition)
     {
-        return 0;
+        //Create a vector from the shell to the target
+        Vector3 explosionToTarget = targetPosition - transform.position; 
+
+        //Calculate the distance from the shell to the target
+        float explosionDistance = explosionToTarget.magnitude;
+
+        // Calculate the propotion of the maximum distance (the explosionRadius) the target is away
+        float relativeDistance = (m_ExlposionRadius -  explosionDistance) / m_ExlposionRadius;
+
+        //Calculate damage as this proportion of the maximum possible damage
+        float damage = relativeDistance * m_MaxDamage;
+
+        //Make sure that the minimum damage is always 0
+        damage = Mathf.Max(0f, damage);
+
+        return damage;
     }
 
 }
