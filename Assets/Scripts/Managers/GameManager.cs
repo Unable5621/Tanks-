@@ -6,6 +6,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public HighScores m_HighScores;
     //Reference to the overlay Text to display winning text, etc
     public TextMeshProUGUI m_MessageText;
     public TextMeshProUGUI m_TimerText;
@@ -87,6 +88,8 @@ public class GameManager : MonoBehaviour
         {
             m_MessageText.text = "WINNER!";
             isGameOver = true;
+            m_HighScores.AddScore(Mathf.RoundToInt(m_gameTime));
+            m_HighScores.SaveScoresToFile();
         }
         
         if (isGameOver == true)
