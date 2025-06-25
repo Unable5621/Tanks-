@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI m_TimerText;
 
     public GameObject m_HighScorePanel;
-    public GameObject m_HighScoresText;
+    public TextMeshProUGUI m_HighScoresText;
 
     public Button m_NewGameButton;
     public Button m_HighScoresButton;
@@ -180,6 +180,6 @@ public class GameManager : MonoBehaviour
             int seconds = m_HighScores.scores[i];
             text += string.Format("{0:D2}:{1:D2}\n", (seconds / 60), (seconds % 60));
         }
-        m_HighScoresText.tag = text;
+        m_HighScoresText.text = text;
     }
 }
