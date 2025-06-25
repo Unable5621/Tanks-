@@ -62,5 +62,11 @@ public class EnemyTankShooting : MonoBehaviour
             m_CanShoot = false;
         }
     }
+
+    private void OnEnable()
+    {
+        //Make sure the tank isn't shooting when it first spawns in
+        m_CanShoot = false;
+    }
 }
 

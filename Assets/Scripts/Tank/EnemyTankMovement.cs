@@ -35,6 +35,7 @@ public class EnemyTankMovement : MonoBehaviour
             m_CurrentTarget = transform;
 
         m_Rigidbody.isKinematic = false;
+        //Teleport to spawn point
         transform.position = m_SpawnPoint.position;
     }
 
@@ -79,7 +80,17 @@ public class EnemyTankMovement : MonoBehaviour
 
         if (m_Turret != null)
         {
-            m_Turret.LookAt(m_CurrentTarget);
+            if (m_CurrentTarget != m_Player.transform)
+            {
+                //When not targeting the player,
+                //look forward so that it doesn't look straight down when reaching the spawn point,
+                //and it also looks more natural when traveling back to it's spawn
+                m_Turret.gameObject.transform.rotation = transform.rotation;
+            }
+            else
+            {
+                m_Turret.LookAt(m_CurrentTarget);
+            }
         }
     }
 }

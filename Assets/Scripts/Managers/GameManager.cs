@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class GameManager : MonoBehaviour
     //Reference to the overlay Text to display winning text, etc
     public TextMeshProUGUI m_MessageText;
     public TextMeshProUGUI m_TimerText;
+
+    public GameObject m_HighScorePanel;
+    public GameObject m_HighScoresText;
+
+    public Button m_NewGameButton;
+    public Button m_HighScoresButton;
 
     public GameObject[] m_Tanks;
 
@@ -40,6 +47,10 @@ public class GameManager : MonoBehaviour
 
         m_TimerText.gameObject.SetActive(false);
         m_MessageText.text = "Get Ready";
+
+        m_HighScorePanel.gameObject.SetActive(false);
+        m_NewGameButton.gameObject.SetActive(false);
+        m_HighScoresButton.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -64,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void GameStateStart()
     {
+       
         if (Input.GetKeyUp(KeyCode.Return) == true)
         {
            OnNewGame();
@@ -95,6 +107,9 @@ public class GameManager : MonoBehaviour
         if (isGameOver == true)
         {
             m_GameState = GameState.GameOver;
+
+            m_NewGameButton.gameObject.SetActive(true);
+            m_HighScoresButton.gameObject.SetActive(true);
         }
     }
 
@@ -135,6 +150,10 @@ public class GameManager : MonoBehaviour
 
     public void OnNewGame()
     {
+        m_NewGameButton.gameObject.SetActive(false);
+        m_HighScoresButton .gameObject.SetActive(false);
+        m_HighScorePanel.gameObject.SetActive(false);
+
         m_TimerText.gameObject.SetActive(true);
         m_MessageText.text = "";
 
@@ -143,7 +162,24 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < m_Tanks.Length; i++)
         {
+            m_Tanks[i].SetActive(false);
             m_Tanks[i].SetActive(true);
         }
+    }
+
+    public void OnHighScores()
+    {
+        m_MessageText.text = "";
+
+        m_HighScoresButton.gameObject.SetActive(false);
+        m_HighScorePanel.gameObject.SetActive(true);
+
+        string text = "";
+        for (int i = 0; i < m_HighScores.scores.Length; i++)
+        {
+            int seconds = m_HighScores.scores[i];
+            text += string.Format("{0:D2}:{1:D2}\n", (seconds / 60), (seconds % 60));
+        }
+        m_HighScoresText.tag = text;
     }
 }

@@ -23,6 +23,8 @@ public class TankMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        //Teleport the tank to it's spawn point
+        transform.position = m_SpawnPoint.position;
         //When the tank is on, make sure it is not kinematic
         m_Rigidbody.isKinematic = false;
 
